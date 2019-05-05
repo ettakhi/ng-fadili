@@ -1,3 +1,4 @@
+import { Person } from './../../models/person';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { PersonService } from 'src/app/services/person.service';
@@ -24,5 +25,10 @@ export class DisplayComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.persons.filter = filterValue.trim().toLowerCase();
+  }
+
+  onPersonAdded(person: Person) {
+    this.persons.data.push(person);
+    this.persons.data = this.persons.data.slice();
   }
 }
