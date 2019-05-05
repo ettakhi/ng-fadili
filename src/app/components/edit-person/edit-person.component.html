@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Modifier "{{ data.firstname }}" info</h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <input matInput [(ngModel)]="person.firstname" placeholder="Prenom" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="person.lastname" placeholder="Nom" />
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="person.sex" placeholder="Sex" />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      [(ngModel)]="person.birth"
+      placeholder="Date de naissance"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-danger" (click)="onNoClick()">Non</button>
+  <button mat-button [mat-dialog-close]="person" cdkFocusInitial>
+    Save
+  </button>
+</div>
