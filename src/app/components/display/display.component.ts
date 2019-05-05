@@ -1,17 +1,18 @@
 import { EditPersonComponent } from './../edit-person/edit-person.component';
 import { Person } from './../../models/person';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PersonService } from 'src/app/services/person.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-display',
   templateUrl: './display.component.html',
   styles: []
 })
-export class DisplayComponent implements OnInit {
+export class DisplayComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'firstname',
     'lastname',
@@ -20,20 +21,23 @@ export class DisplayComponent implements OnInit {
     'update',
     'delete'
   ];
+
   persons;
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private personService: PersonService
+    private personService: PersonService,
+    private db: AngularFirestore
   ) {}
 
   ngOnInit() {
-    this.personService
-      .getAll()
-      .subscribe(
-        res => (this.persons = new MatTableDataSource(res)),
-        error => console.error('error:', error)
-      );
+    this.personService.getAll().subscribe(
+      res => {
+        console.log({ res });
+        this.persons = new MatTableDataSource(res);
+      },
+      error => console.error('error:', error)
+    );
   }
 
   applyFilter(filterValue: string) {
@@ -45,14 +49,7 @@ export class DisplayComponent implements OnInit {
     this.persons.data = this.persons.data.slice();
   }
   onDeletePerson(id: string) {
-    this.personService.deletePerson(id).subscribe(
-      res => {
-        const persons = this.persons.data.filter(p => p.id !== id);
-        this.persons.data = persons;
-        this.persons.data.splice();
-      },
-      error => console.error('error: ', error)
-    );
+    this.personService.deletePerson(id);
   }
 
   onEditPerson(person: Person): void {
@@ -64,11 +61,12 @@ export class DisplayComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
-      this.personService.updatePerson(result).subscribe((res: Person) => {
-        const persons = this.persons.data.map(p => (p.id === res.id ? res : p));
-        this.persons.data = persons;
-        this.persons.data.splice();
-      });
+      if (result) {
+        this.personService.updatePerson(result);
+      }
     });
+  }
+  ngOnDestroy(): void {
+    // TODO unsubscribe from data
   }
 }

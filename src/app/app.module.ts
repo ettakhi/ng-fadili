@@ -1,3 +1,4 @@
+import { environment } from './../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +13,8 @@ import { DisplayComponent } from './components/display/display.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AddDataComponent } from './components/add-data/add-data.component';
 import { EditPersonComponent } from './components/edit-person/edit-person.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { EditPersonComponent } from './components/edit-person/edit-person.compon
     FormsModule,
     MatTableModule,
     MatDialogModule,
-    MatInputModule
+    MatInputModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   entryComponents: [EditPersonComponent],
   providers: [],
