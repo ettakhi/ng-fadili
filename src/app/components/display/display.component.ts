@@ -1,4 +1,7 @@
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { PersonService } from 'src/app/services/person.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-display',
@@ -6,10 +9,20 @@ import { Component, OnInit } from '@angular/core';
   styles: []
 })
 export class DisplayComponent implements OnInit {
-
-  constructor() { }
+  displayedColumns: string[] = ['firstname', 'lastname', 'sex', 'birth'];
+  persons;
+  constructor(private fb: FormBuilder, private personService: PersonService) {}
 
   ngOnInit() {
+    this.personService
+      .getAll()
+      .subscribe(
+        res => (this.persons = new MatTableDataSource(res)),
+        error => console.error('error:', error)
+      );
   }
 
+  applyFilter(filterValue: string) {
+    this.persons.filter = filterValue.trim().toLowerCase();
+  }
 }

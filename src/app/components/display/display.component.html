@@ -1,6 +1,32 @@
 <app-add-data></app-add-data>
 <div class="row">
-  <div *ngFor="let person of persons">
-    Hello
-  </div>
+  <input (keyup)="applyFilter($event.target.value)" placeholder="Filter" />
+  <table mat-table [dataSource]="persons" class="mat-elevation-z8">
+    <!-- Firstanem Column -->
+    <ng-container matColumnDef="firstname">
+      <th mat-header-cell *matHeaderCellDef>Prenom</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstname }}</td>
+    </ng-container>
+
+    <!-- Lastname Column -->
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastname }}</td>
+    </ng-container>
+
+    <!-- Birth date Column -->
+    <ng-container matColumnDef="birth">
+      <th mat-header-cell *matHeaderCellDef>Date de Naissance</th>
+      <td mat-cell *matCellDef="let element">{{ element.birth }}</td>
+    </ng-container>
+
+    <!-- Sex Column -->
+    <ng-container matColumnDef="sex">
+      <th mat-header-cell *matHeaderCellDef>Sexe</th>
+      <td mat-cell *matCellDef="let element">{{ element.sex }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
 </div>
