@@ -1,4 +1,5 @@
 export class Person {
+  id?: string;
   firstname = '';
   lastname = '';
   birth = '';

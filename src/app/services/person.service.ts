@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PersonService {
-  private readonly URL_PERSONS = 'https://api.myjson.com/bins/17bfn0'; // TODO
+  private readonly URL_PERSONS = 'https://api.myjson.com/bins/o7mu4'; // TODO
 
   constructor(private http: HttpClient) {}
 
